@@ -1,7 +1,8 @@
 import compose from './compose'
 
 export default function applyMiddleware(...middlewares) {
-    return createStore => (...args) => {
+    return createStore => (...args) => {    
+        // 生成store
         const store = createStore(...args)
         let dispatch = () => {
             throw new Error('构造中间键的时候不能运行dispatch,否则其他中间键将接收不到dispatch')
@@ -13,7 +14,7 @@ export default function applyMiddleware(...middlewares) {
     
         const chain = middlewares.map(middleware => middleware(middlewareAPI))
         dispatch = compose(...chain)(store.dispatch)
-    
+        
         return {
             ...store,
             dispatch
